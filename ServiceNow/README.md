@@ -41,7 +41,7 @@ The `pagerduty_servicenow_incidents.py` script sends a GET request to the incide
 
 4. Run the `pagerduty_servicenow_incidents.py` script from the command line, in the ServiceNow folder where you cloned the incident_mappings repository:
    ```bash
-   python3 external_references.py
+   python3 pagerduty_servicenow_incidents.py
    ```
 
 ## How the Script Works
