@@ -1,10 +1,5 @@
-# PagerDuty to ServiceNow Incident Mapper
-
-A Python script to extract PagerDuty incidents with ServiceNow metadata and generate a CSV mapping file.
-
-## Description
-
-This script sends a GET request to the incidents endpoint to retrieve incident data, filters for incidents containing ServiceNow metadata, and then generates a CSV file mapping the PagerDuty incidents to their corresponding ServiceNow incidents:
+# PagerDuty to ServiceNow Incident Mapping
+The `external_references.py` script sends a GET request to the incidents endpoint to retrieve incident data, filters for incidents containing ServiceNow metadata, and then generates a CSV file mapping the PagerDuty incidents to their corresponding ServiceNow incidents:
 
 - PagerDuty Incident Number
 - Title
@@ -44,7 +39,7 @@ This script sends a GET request to the incidents endpoint to retrieve incident d
 
 3. Define your request parameters in the `request_parameters.py` file.
 
-4. Run the script from the command line, from the same directory where you cloned this repository:
+4. Run the `external_references.py` script from the command line, from the same directory where you cloned this repository:
    ```bash
    python3 external_references.py
    ```
@@ -59,7 +54,7 @@ The `external_references.py` script will:
 
 ## Error Handling
 
-The script will exit with an error message in the following cases:
+The `external_references.py` script will exit with an error message in the following cases:
 
 - If the PagerDuty API request fails
 - If no incidents with ServiceNow metadata are found
