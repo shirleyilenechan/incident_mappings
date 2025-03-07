@@ -1,5 +1,5 @@
 # PagerDuty to ServiceNow Incident Mapping
-The `pagerduty_servicenow_mappings.py` script sends a GET request to the incidents endpoint to retrieve incident data, filters for incidents containing ServiceNow metadata, and then generates a CSV file mapping the PagerDuty incidents to their corresponding ServiceNow incidents:
+The `pagerduty_servicenow_incidents.py` script sends a GET request to the incidents endpoint to retrieve incident data, filters for incidents containing ServiceNow metadata, and then generates a CSV file mapping the PagerDuty incidents to their corresponding ServiceNow incidents:
 
 - PagerDuty Incident Number
 - Title
@@ -20,7 +20,7 @@ The `pagerduty_servicenow_mappings.py` script sends a GET request to the inciden
 
 1. Clone this repository
    ```bash
-   git clone https://github.com/shirleyilenechan/PagerDuty-to-ServiceNow-Incident-Mapping.git
+   git clone https://github.com/shirleyilenechan/incident_mappings.git
    ```
 
 2. Install required dependencies:
@@ -30,7 +30,7 @@ The `pagerduty_servicenow_mappings.py` script sends a GET request to the inciden
 
 ## Usage
 
-1. Create a `.env` file in the same directory where you cloned this repository.
+1. Create a `.env` file in the ServiceNow folder where you cloned the incident_mappings repository.
 
 2. Update the `.env` file with your PagerDuty API key:
    ```
@@ -39,22 +39,22 @@ The `pagerduty_servicenow_mappings.py` script sends a GET request to the inciden
 
 3. Define your request parameters in the `request_parameters.py` file.
 
-4. Run the `pagerduty_servicenow_mappings.py` script from the command line, from the same directory where you cloned this repository:
+4. Run the `pagerduty_servicenow_incidents.py` script from the command line, in the ServiceNow folder where you cloned the incident_mappings repository:
    ```bash
    python3 external_references.py
    ```
 
 ## How the Script Works
 
-The `pagerduty_servicenow_mappings.py` script will:
+The `pagerduty_servicenow_incidents.py` script will:
 
 1. Send a GET request to the incidents endpoint to retrieve incident data
 2. Filter incidents to include only those with ServiceNow references
-3. Generate a CSV file named `pagerduty_incidents_mapped_to_servicenow.csv` in the same directory where you cloned this repository.
+3. Generate a CSV file named `pagerduty_incidents_mapped_to_servicenow.csv` in the ServiceNow folder where you cloned the incident_mappings repository.
 
 ## Error Handling
 
-The `pagerduty_servicenow_mappings.py` script will exit with an error message in the following cases:
+The `pagerduty_servicenow_incidents.py` script will exit with an error message in the following cases:
 
 - If the PagerDuty API request fails
 - If no incidents with ServiceNow metadata are found
