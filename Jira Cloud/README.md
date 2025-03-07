@@ -9,7 +9,7 @@ The `pagerduty_jira_incidents.py` script sends a GET request to the incidents en
 - Status
 - PagerDuty Incident URL
 - Jira Ticket ID
-- Jira Incident URL
+- Jira Ticket URL
 
 ## Requirements
 

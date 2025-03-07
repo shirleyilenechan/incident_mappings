@@ -84,14 +84,14 @@ def generate_csv(filtered_incidents):
     
     Creates a CSV file with relevant PagerDuty incident information (PagerDuty Incident Number", "Title", "Description", 
     "Created At", "Updated At", "Status", "PagerDuty Incident URL") and
-    the corresponding Jira incident IDs and incident URLs.
+    the corresponding Jira ticket IDs and Jira ticket URLs.
     
     Args:
         filtered_incidents (list): List of incidents containing Jira external_reference.
     """
     csv_filename = "pagerduty_incidents_mapped_to_jira.csv"
     # Define the header for the CSV
-    headers = ["PagerDuty Incident Number", "Title", "Description", "Created At", "Updated At", "Status", "PagerDuty Incident URL", "Jira Ticket ID", "Jira Incident URL"]
+    headers = ["PagerDuty Incident Number", "Title", "Description", "Created At", "Updated At", "Status", "PagerDuty Incident URL", "Jira Ticket ID", "Jira Ticket URL"]
     # Write to CSV file
     with open(csv_filename, mode="w", newline="", encoding="utf-8") as file:
         writer = csv.DictWriter(file, fieldnames=headers)
@@ -108,7 +108,7 @@ def generate_csv(filtered_incidents):
                     "Status": incident.get("status", ""),
                     "PagerDuty Incident URL": incident.get("html_url", ""),
                     "Jira Ticket ID": reference["external_id"],
-                    "Jira Incident URL": reference["external_url"],
+                    "Jira Ticket URL": reference["external_url"],
                 })
 
 
