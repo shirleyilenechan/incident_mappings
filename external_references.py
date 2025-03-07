@@ -5,12 +5,20 @@ import os
 
 from dotenv import load_dotenv
 
-
 load_dotenv()
 PAGERDUTY_REST_API_KEY = os.getenv("PAGERDUTY_REST_API_KEY")
 
-def get_incidents():
 
+def get_incidents():
+    """
+    Makes a GET request to the incidents endpoint to retrieve incident data.
+    
+    Raises:
+        SystemExit: If the API request fails or returns an error.
+        
+    Returns:
+        dict: JSON response containing incident data if successful.
+    """
     url = "https://api.pagerduty.com/incidents"
 
     querystring = {"include[]":"metadata"}
@@ -31,6 +39,22 @@ def get_incidents():
     
 
 def filter_incidents(incidents):
+    """
+    Filter incidents to only include those with ServiceNow metadata.
+    
+    Iterates through the incidents and keeps only those containing
+    servicenow metadata.
+    
+    Args:
+        incidents (dict): JSON dict containing incident data returned from the GET request
+        to the incidents endpoint.
+        
+    Raises:
+        SystemExit: If no incidents with ServiceNow metadata are found.
+        
+    Returns:
+        list: incidents containing ServiceNow metadata.
+    """
     incidents_with_metadata = []
     for incident in incidents["incidents"]:
         if incident["metadata"] != []:
@@ -45,6 +69,16 @@ def filter_incidents(incidents):
 
 
 def generate_csv(filtered_incidents):
+    """
+    Generate a CSV file mapping PagerDuty incidents to ServiceNow data.
+    
+    Creates a CSV file with relevant PagerDuty incident information (PagerDuty Incident Number", "Title", "Description", 
+    "Created At", "Updated At", "Status", "PagerDuty Incident URL") and
+    the corresponding ServiceNow incident IDs and incident URLs.
+    
+    Args:
+        filtered_incidents (list): List of incidents containing ServiceNow metadata.
+    """
     csv_filename = "pagerduty_incidents_mapped_to_servicenow.csv"
     # Define the header for the CSV
     headers = ["PagerDuty Incident Number", "Title", "Description", "Created At", "Updated At", "Status", "PagerDuty Incident URL", "ServiceNow Incident ID", "ServiceNow Incident URL"]
@@ -58,8 +92,8 @@ def generate_csv(filtered_incidents):
                 if "servicenow" in key:
                     servicenow_key = key
                     servicenow_value = json.loads(value)
-                    external_name = servicenow_value.get("external_name")
-                    external_url = servicenow_value.get("external_url")
+                    external_name = servicenow_value.get("external_name", "")
+                    external_url = servicenow_value.get("external_url", "")
             writer.writerow({
                 "PagerDuty Incident Number": incident.get("incident_number", ""),
                 "Title": incident.get("title", ""),
