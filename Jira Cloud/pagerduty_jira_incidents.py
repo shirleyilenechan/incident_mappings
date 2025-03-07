@@ -23,7 +23,7 @@ def get_incidents():
     """
     url = "https://api.pagerduty.com/incidents"
 
-    querystring = {"include[]":"metadata"}
+    querystring = {"include[]":"external_references"}
 
     headers = {
         "Accept": "application/json",
@@ -51,71 +51,66 @@ def get_incidents():
 
 def filter_incidents(incidents):
     """
-    Filter incidents to only include those with ServiceNow metadata.
+    Filter incidents to only include those with Jira external_reference.
     
     Iterates through the incidents and keeps only those containing
-    servicenow metadata.
+    Jira external_reference.
     
     Args:
         incidents (dict): JSON dict containing incident data returned from the GET request
         to the incidents endpoint.
         
     Raises:
-        SystemExit: If no incidents with ServiceNow metadata are found.
+        SystemExit: If no incidents with Jira external_reference are found.
         
     Returns:
-        list: incidents containing ServiceNow metadata.
+        list: incidents containing Jira external_reference.
     """
-    incidents_with_metadata = []
+    incidents_with_jira_reference = []
     for incident in incidents["incidents"]:
-        if incident["metadata"] != []:
-            #only include incidents with servicenow metadata
-            if any("servicenow" in key.lower() for key in incident["metadata"]):
-                incidents_with_metadata.append(incident)
-
-    if not incidents_with_metadata:
-        raise SystemExit("No ServiceNow metadata found in any incidents")
+        if incident["external_references"] != []:
+            for reference in incident["external_references"]:
+                if "JIRA" in reference["summary"]:
+                    incidents_with_jira_reference.append(incident)
     
-    return incidents_with_metadata
-
-
+    if not incidents_with_jira_reference:
+        raise SystemExit("No Jira external_reference found in any incidents")
+    
+    return incidents_with_jira_reference
+    
 def generate_csv(filtered_incidents):
     """
-    Generate a CSV file mapping PagerDuty incidents to ServiceNow data.
+    Generate a CSV file mapping PagerDuty incidents to Jira data.
     
     Creates a CSV file with relevant PagerDuty incident information (PagerDuty Incident Number", "Title", "Description", 
     "Created At", "Updated At", "Status", "PagerDuty Incident URL") and
-    the corresponding ServiceNow incident IDs and incident URLs.
+    the corresponding Jira incident IDs and incident URLs.
     
     Args:
-        filtered_incidents (list): List of incidents containing ServiceNow metadata.
+        filtered_incidents (list): List of incidents containing Jira external_reference.
     """
-    csv_filename = "pagerduty_incidents_mapped_to_servicenow.csv"
+    csv_filename = "pagerduty_incidents_mapped_to_jira.csv"
     # Define the header for the CSV
-    headers = ["PagerDuty Incident Number", "Title", "Description", "Created At", "Updated At", "Status", "PagerDuty Incident URL", "ServiceNow Incident ID", "ServiceNow Incident URL"]
+    headers = ["PagerDuty Incident Number", "Title", "Description", "Created At", "Updated At", "Status", "PagerDuty Incident URL", "Jira Ticket ID", "Jira Incident URL"]
     # Write to CSV file
     with open(csv_filename, mode="w", newline="", encoding="utf-8") as file:
         writer = csv.DictWriter(file, fieldnames=headers)
         writer.writeheader()
         
         for incident in filtered_incidents:
-            for key, value in incident["metadata"].items():
-                if "servicenow" in key:
-                    servicenow_key = key
-                    servicenow_value = json.loads(value)
-                    external_name = servicenow_value.get("external_name", "")
-                    external_url = servicenow_value.get("external_url", "")
-            writer.writerow({
-                "PagerDuty Incident Number": incident.get("incident_number", ""),
-                "Title": incident.get("title", ""),
-                "Description": incident.get("description", ""),
-                "Created At": incident.get("created_at", ""),
-                "Updated At": incident.get("updated_at", ""),
-                "Status": incident.get("status", ""),
-                "PagerDuty Incident URL": incident.get("html_url", ""),
-                "ServiceNow Incident ID": external_name,
-                "ServiceNow Incident URL": external_url
-            })
+            for reference in incident["external_references"]:
+                writer.writerow({
+                    "PagerDuty Incident Number": incident.get("incident_number", ""),
+                    "Title": incident.get("title", ""),
+                    "Description": incident.get("description", ""),
+                    "Created At": incident.get("created_at", ""),
+                    "Updated At": incident.get("updated_at", ""),
+                    "Status": incident.get("status", ""),
+                    "PagerDuty Incident URL": incident.get("html_url", ""),
+                    "Jira Ticket ID": reference["external_id"],
+                    "Jira Incident URL": reference["external_url"],
+                })
+
 
 def main():
     incidents = get_incidents()
