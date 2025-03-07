@@ -5,6 +5,8 @@ import os
 
 from dotenv import load_dotenv
 
+import request_parameters as parameters
+
 load_dotenv()
 PAGERDUTY_REST_API_KEY = os.getenv("PAGERDUTY_REST_API_KEY")
 
@@ -28,6 +30,15 @@ def get_incidents():
         "Content-Type": "application/json",
         "Authorization": f"Token token={PAGERDUTY_REST_API_KEY}"
     }
+
+    if parameters.since:
+        querystring["since"] = parameters.since
+    if parameters.until:
+        querystring["until"] = parameters.until
+    if parameters.limit:
+        querystring["limit"] = parameters.limit
+    if parameters.offset:
+        querystring["offset"] = parameters.offset
 
     try:
         response = requests.get(url, headers=headers, params=querystring)
