@@ -1,5 +1,5 @@
-# PagerDuty to Jira Incident Mapping
-The `pagerduty_jira_incidents.py` script sends a GET request to the incidents endpoint to retrieve incident data, filters for incidents containing Jira external_references, and then generates a CSV file mapping the PagerDuty incidents to their corresponding Jira tickets:
+# PagerDuty to ServiceNow Incident Mapping
+The `pagerduty_zendesk_incidents.py` script sends a GET request to the incidents endpoint to retrieve incident data, filters for incidents containing ZenDesk metadata, and then generates a CSV file mapping the PagerDuty incidents to their corresponding ZenDesk tickets:
 
 - PagerDuty Incident Number
 - Title
@@ -8,14 +8,14 @@ The `pagerduty_jira_incidents.py` script sends a GET request to the incidents en
 - Updated At
 - Status
 - PagerDuty Incident URL
-- Jira Ticket ID
-- Jira Ticket URL
+- ZenDesk Ticket ID
+- ZenDesk Ticket URL
 
 ## Requirements
 
 - Python 3.6+
 - PagerDuty API Access Token
-
+py
 ## Installation
 
 1. Clone this repository
@@ -30,7 +30,7 @@ The `pagerduty_jira_incidents.py` script sends a GET request to the incidents en
 
 ## Usage
 
-1. Create a `.env` file in the Jira Cloud folder where you cloned the incident_mappings repository.
+1. Create a `.env` file in the ZenDesk folder where you cloned the incident_mappings repository.
 
 2. Update the `.env` file with your PagerDuty API key:
    ```
@@ -39,25 +39,25 @@ The `pagerduty_jira_incidents.py` script sends a GET request to the incidents en
 
 3. Define your request parameters in the `request_parameters.py` file.
 
-4. Run the `pagerduty_jira_incidents.py` script from the command line, in the Jira Cloud folder where you cloned the incident_mappings repository:
+4. Run the `pagerduty_zendesk_incidents.py` script from the command line, in the ZenDesk folder where you cloned the incident_mappings repository:
    ```bash
-   python3 pagerduty_jira_incidents.py
+   python3 pagerduty_zendesk_incidents.py
    ```
 
 ## How the Script Works
 
-The `pagerduty_jira_incidents.py` script will:
+The `pagerduty_zendesk_incidents.py` script will:
 
 1. Send a GET request to the incidents endpoint to retrieve incident data
-2. Filter incidents to include only those with Jira external_references
-3. Generate a CSV file named `pagerduty_incidents_mapped_to_jira.csv` in the Jira Cloud folder where you cloned the incident_mappings repository.
+2. Filter incidents to include only those with ZenDesk references
+3. Generate a CSV file named `pagerduty_incidents_mapped_to_zendesk.csv` in the ZenDesk folder where you cloned the incident_mappings repository.
 
 ## Error Handling
 
-The `pagerduty_jira_incidents.py` script will exit with an error message in the following cases:
+The `pagerduty_zendesk_incidents.py` script will exit with an error message in the following cases:
 
 - If the PagerDuty API request fails
-- If no incidents with Jira external_references are found
+- If no incidents with ZenDesk metadata are found
 
 ## Security Notes
 
