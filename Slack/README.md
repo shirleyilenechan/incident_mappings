@@ -61,6 +61,6 @@ The `pagerduty_slack_incidents.py` script will exit with an error message in the
 
 ## Resources
 
-1. [List incidents endpoint documentation](https://developer.pagerduty.com/api-reference/9d0b4b12e36f9-list-incidents)
+1. [List log entries documentation](https://developer.pagerduty.com/api-reference/c661e065403b5-list-log-entries)
 2. [Pagination documentation](https://developer.pagerduty.com/docs/pagination)
 3. [API Access Keys documentation](https://support.pagerduty.com/main/docs/api-access-keys)
