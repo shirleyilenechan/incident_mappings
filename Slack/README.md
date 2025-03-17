@@ -1,21 +1,16 @@
-# PagerDuty to ZenDesk Incident Mapping
-The `pagerduty_zendesk_incidents.py` script sends a GET request to the incidents endpoint to retrieve incident data, filters for incidents containing ZenDesk metadata, and then generates a CSV file mapping the PagerDuty incidents to their corresponding ZenDesk tickets:
+# PagerDuty to Slack Incident Mapping
+The `pagerduty_slack_incidents.py` script sends a GET request to the log_entries endpoint to retrieve log entries data, filters for log entries containing a Slack incident post, and then generates a CSV file mapping PagerDuty incidents to their corresponding Slack incident posts:
 
-- PagerDuty Incident Number
-- Title
-- Description
-- Created At
-- Updated At
-- Status
+- PagerDuty Incident Title
 - PagerDuty Incident URL
-- ZenDesk Ticket ID
-- ZenDesk Ticket URL
+- Slack Channel Name
+- Slack Incident Post URL
 
 ## Requirements
 
 - Python 3.6+
 - PagerDuty API Access Token
-py
+
 ## Installation
 
 1. Clone this repository
@@ -30,7 +25,7 @@ py
 
 ## Usage
 
-1. Create a `.env` file in the ZenDesk folder where you cloned the incident_mappings repository.
+1. Create a `.env` file in the Slack folder where you cloned the incident_mappings repository.
 
 2. Update the `.env` file with your PagerDuty API key:
    ```
@@ -39,25 +34,25 @@ py
 
 3. Define your request parameters in the `request_parameters.py` file.
 
-4. Run the `pagerduty_zendesk_incidents.py` script from the command line, in the ZenDesk folder where you cloned the incident_mappings repository:
+4. Run the `pagerduty_slack_incidents.py` script from the command line, in the Slack folder where you cloned the incident_mappings repository:
    ```bash
-   python3 pagerduty_zendesk_incidents.py
+   pagerduty_slack_incidents.py
    ```
 
 ## How the Script Works
 
-The `pagerduty_zendesk_incidents.py` script will:
+The `pagerduty_slack_incidents.py` script will:
 
-1. Send a GET request to the incidents endpoint to retrieve incident data
-2. Filter incidents to include only those with ZenDesk references
-3. Generate a CSV file named `pagerduty_incidents_mapped_to_zendesk.csv` in the ZenDesk folder where you cloned the incident_mappings repository.
+1. Send a GET request to the log_entries endpoint to retrieve log entry data
+2. Filter log entries to include only those with a Slack incident post
+3. Generate a CSV file named `pagerduty_incidents_mapped_to_slack.csv` in the Slack folder where you cloned the incident_mappings repository.
 
 ## Error Handling
 
-The `pagerduty_zendesk_incidents.py` script will exit with an error message in the following cases:
+The `pagerduty_slack_incidents.py` script will exit with an error message in the following cases:
 
 - If the PagerDuty API request fails
-- If no incidents with ZenDesk metadata are found
+- If no log entries containing a Slack incident incident post
 
 ## Security Notes
 
